@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Movimientos por Cliente - Distribuidora Zarci</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #ddd6fe 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 0.95em;
+        }
+
+        .export-btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+
+        .export-btn:hover {
+            background: #15803d;
+        }
+
+        .client-selector {
+            background: #eff6ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .client-selector label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.95em;
+        }
+
+        .client-selector select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #93c5fd;
+            border-radius: 6px;
+            font-size: 1em;
+            background: white;
+            cursor: pointer;
+        }
+
+        .client-info-card {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 2px solid #93c5fd;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.8em;
+            color: #6b7280;
+            margin-bottom: 2px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .alert {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+
+        .input-group input {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .summary-card {
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .summary-card.blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .summary-card.green { background: linear-gradient(135deg, #10b981, #059669); }
+        .summary-card.purple { background: linear-gradient(135deg, #a855f7, #9333ea); }
+        .summary-card.orange { background: linear-gradient(135deg, #f97316, #ea580c); }
+
+        .summary-card .label {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .summary-card .value {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .form-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-actions .input-group {
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+            margin-top: auto;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-primary:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        select {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1em;
+            background: white;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+        }
+
+        th {
+            padding: 15px 12px;
+            text-align: left;
+            font-size: 0.85em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        th.text-center { text-align: center; }
+        th.text-right { text-align: right; }
+
+        td {
+            padding: 12px;
+            font-size: 0.9em;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tbody tr.vigente {
+            background: #d1fae5 !important;
+        }
+
+        tbody tr.vigente:hover {
+            background: #a7f3d0 !important;
+        }
+
+        tbody tr.vencido {
+            background: #fee2e2 !important;
+        }
+
+        tbody tr.vencido:hover {
+            background: #fecaca !important;
+        }
+
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .badge.venta { background: #dbeafe; color: #1e40af; }
+        .badge.pago { background: #d1fae5; color: #065f46; }
+        .badge.nota { background: #e9d5ff; color: #6b21a8; }
+        .badge.notadecrédito { background: #e9d5ff; color: #6b21a8; }
+        .badge.ajuste { background: #e5e7eb; color: #374151; }
+        .badge.vigente { background: #d1fae5; color: #065f46; }
+        .badge.vencido { background: #fee2e2; color: #991b1b; }
+
+        .amount-red { color: #dc2626; font-weight: 600; }
+        .amount-green { color: #16a34a; font-weight: 600; }
+        .amount-bold { font-weight: 700; }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+
+        .btn-icon {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-edit { background: #3b82f6; color: white; }
+        .btn-edit:hover { background: #2563eb; }
+        .btn-delete { background: #ef4444; color: white; }
+        .btn-delete:hover { background: #dc2626; }
+        .btn-save { background: #16a34a; color: white; }
+        .btn-save:hover { background: #15803d; }
+        .btn-cancel { background: #6b7280; color: white; }
+        .btn-cancel:hover { background: #4b5563; }
+
+        tfoot {
+            background: #f3f4f6;
+            font-weight: bold;
+        }
+
+        tfoot td {
+            padding: 15px 12px;
+            font-size: 0.95em;
+        }
+
+        .instructions {
+            margin-top: 25px;
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .instructions h3 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .instructions ul {
+            list-style: none;
+            color: #1e40af;
+        }
+
+        .instructions li {
+            margin: 8px 0;
+            font-size: 0.9em;
+        }
+
+        .editing-row {
+            background: #fef3c7 !important;
+        }
+
+        .editing-row input,
+        .editing-row select {
+            padding: 6px;
+            font-size: 0.85em;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .export-btn, .btn-icon, .form-card, .instructions {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.5em; }
+            .form-grid { grid-template-columns: 1fr; }
+            .summary-cards { grid-template-columns: 1fr; }
+            .header-top { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header-card">
+            <div class="header-top">
+                <div>
+                    <h1>📊 Registro de Movimientos por Cliente</h1>
+                    <p class="subtitle">Distribuidora de Alimentos Zarci S.A. de C.V.</p>
+                </div>
+                <button class="export-btn" onclick="exportarCSV()" id="btnExportar" disabled>
+                    📥 Exportar CSV
+                </button>
+            </div>
+
+            <!-- Client Selector -->
+            <div class="client-selector">
+                <label>🔍 Seleccionar Cliente</label>
+                <select id="selectorCliente" onchange="cargarCliente()">
+                    <option value="">-- Seleccione un cliente --</option>
+                </select>
+                <div id="clienteInfoCard" style="display: none;" class="client-info-card">
+                    <div class="info-item">
+                        <span class="info-label">Código</span>
+                        <span class="info-value" id="infoCodigo">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">RFC</span>
+                        <span class="info-value" id="infoRFC">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Ciudad</span>
+                        <span class="info-value" id="infoCiudad">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Teléfono</span>
+                        <span class="info-value" id="infoTelefono">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Línea de Crédito</span>
+                        <span class="info-value" id="infoCredito">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Plazo</span>
+                        <span class="info-value" id="infoPlazo">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="alertaNoCliente" class="alert alert-info">
+                ℹ️ <strong>No hay clientes registrados.</strong> Primero debes crear clientes en la Base de Datos Maestra de Clientes, luego podrás registrar sus movimientos aquí.
+            </div>
+
+            <div id="alertaSeleccionar" class="alert" style="display: none;">
+                ⚠️ <strong>Selecciona un cliente</strong> para comenzar a registrar movimientos.
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="summary-cards" id="summaryCards" style="display: none;">
+                <div class="summary-card blue">
+                    <div class="label">Saldo Actual</div>
+                    <div class="value" id="saldoTotal">$0</div>
+                </div>
+                <div class="summary-card green">
+                    <div class="label">Total Cargos</div>
+                    <div class="value" id="totalCargos">$0</div>
+                </div>
+                <div class="summary-card purple">
+                    <div class="label">Total Abonos</div>
+                    <div class="value" id="totalAbonos">$0</div>
+                </div>
+                <div class="summary-card orange">
+                    <div class="label">Movimientos</div>
+                    <div class="value" id="totalMovimientos">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="form-card" id="formCard" style="display: none;">
+            <div class="form-title">
+                ➕ Agregar Nuevo Movimiento
+            </div>
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>Fecha *</label>
+                    <input type="date" id="fecha" required>
+                </div>
+                <div class="input-group">
+                    <label>Tipo *</label>
+                    <select id="tipo">
+                        <option>Venta</option>
+                        <option>Pago</option>
+                        <option>Nota de Crédito</option>
+                        <option>Ajuste</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>No. Documento *</label>
+                    <input type="text" id="numDocumento" placeholder="F-1000" required>
+                </div>
+                <div class="input-group">
+                    <label>Descripción</label>
+                    <input type="text" id="descripcion" placeholder="Concepto">
+                </div>
+                <div class="input-group">
+                    <label>Cargo</label>
+                    <input type="number" id="cargo" value="0" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Abono</label>
+                    <input type="number" id="abono" value="0" step="0.01">
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="input-group">
+                    <label>Plazo Crédito (días)</label>
+                    <input type="number" id="plazoCredito" value="30">
+                </div>
+                <button class="btn-primary" onclick="agregarMovimiento()">
+                    ➕ Agregar Movimiento
+                </button>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card" id="tableCard" style="display: none;">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Tipo</th>
+                            <th>No. Doc.</th>
+                            <th>Descripción</th>
+                            <th class="text-right">Cargo</th>
+                            <th class="text-right">Abono</th>
+                            <th class="text-right">Saldo</th>
+                            <th class="text-center">Plazo</th>
+                            <th class="text-center">Vencimiento</th>
+                            <th class="text-center">Días Mora</th>
+                            <th class="text-center">Estatus</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="text-right">TOTALES:</td>
+                            <td class="text-right amount-red" id="footerCargos">$0</td>
+                            <td class="text-right amount-green" id="footerAbonos">$0</td>
+                            <td class="text-right" style="color: #2563eb; font-size: 1.1em;" id="footerSaldo">$0</td>
+                            <td colspan="5"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>📋 Instrucciones de uso:</h3>
+            <ul>
+                <li>• <strong>Paso 1:</strong> Selecciona un cliente del menú desplegable superior</li>
+                <li>• <strong>Paso 2:</strong> Registra los movimientos (ventas, pagos, etc.) del cliente seleccionado</li>
+                <li>• <strong>Cargo:</strong> Aumenta el saldo (ventas, cargos adicionales)</li>
+                <li>• <strong>Abono:</strong> Disminuye el saldo (pagos, notas de crédito)</li>
+                <li>• <strong>Código de colores:</strong> Verde = Vigente, Rojo = Vencido</li>
+                <li>• Los movimientos se guardan automáticamente y se asocian al cliente seleccionado</li>
+                <li>• El plazo de crédito se toma automáticamente del cliente, pero puedes modificarlo por movimiento</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Set today's date
+        document.getElementById('fecha').valueAsDate = new Date();
+
+        // Variables globales
+        let clienteActual = null;
+        let movimientos = JSON.parse(localStorage.getItem('movimientos')) || {};
+        let editingId = null;
+
+        function inicializar() {
+            cargarClientes();
+        }
+
+        function cargarClientes() {
+            const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+            const selector = document.getElementById('selectorCliente');
+            const alertaNoCliente = document.getElementById('alertaNoCliente');
+            
+            // Limpiar selector
+            selector.innerHTML = '<option value="">-- Seleccione un cliente --</option>';
+            
+            if (clientes.length === 0) {
+                alertaNoCliente.style.display = 'block';
+                return;
+            }
+            
+            alertaNoCliente.style.display = 'none';
+            
+            // Poblar selector con clientes activos
+            clientes
+                .filter(c => c.estatus === 'Activo')
+                .forEach(cliente => {
+                    const option = document.createElement('option');
+                    option.value = cliente.codigo;
+                    option.textContent = `${cliente.codigo} - ${cliente.nombre}`;
+                    selector.appendChild(option);
+                });
+        }
+
+        function cargarCliente() {
+            const codigoSeleccionado = document.getElementById('selectorCliente').value;
+            const alertaSeleccionar = document.getElementById('alertaSeleccionar');
+            
+            if (!codigoSeleccionado) {
+                // No hay cliente seleccionado
+                clienteActual = null;
+                document.getElementById('clienteInfoCard').style.display = 'none';
+                document.getElementById('summaryCards').style.display = 'none';
+                document.getElementById('formCard').style.display = 'none';
+                document.getElementById('tableCard').style.display = 'none';
+                document.getElementById('btnExportar').disabled = true;
+                alertaSeleccionar.style.display = 'block';
+                return;
+            }
+            
+            alertaSeleccionar.style.display = 'none';
+            
+            // Cargar datos del cliente
+            const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+            clienteActual = clientes.find(c => c.codigo === codigoSeleccionado);
+            
+            if (!clienteActual) return;
+            
+            // Mostrar información del cliente
+            document.getElementById('clienteInfoCard').style.display = 'grid';
+            document.getElementById('infoCodigo').textContent = clienteActual.codigo;
+            document.getElementById('infoRFC').textContent = clienteActual.rfc;
+            document.getElementById('infoCiudad').textContent = clienteActual.ciudad || 'N/A';
+            document.getElementById('infoTelefono').textContent = clienteActual.telefonoCelular || clienteActual.telefonoFijo || 'N/A';
+            document.getElementById('infoCredito').textContent = '$' + parseFloat(clienteActual.lineaCredito || 0).toLocaleString('es-MX');
+            document.getElementById('infoPlazo').textContent = clienteActual.plazoCredito + ' días';
+            
+            // Establecer plazo por defecto en el formulario
+            document.getElementById('plazoCredito').value = clienteActual.plazoCredito || 30;
+            
+            // Mostrar formulario y tabla
+            document.getElementById('summaryCards').style.display = 'grid';
+            document.getElementById('formCard').style.display = 'block';
+            document.getElementById('tableCard').style.display = 'block';
+            document.getElementById('btnExportar').disabled = false;
+            
+            // Renderizar movimientos del cliente
+            renderTable();
+        }
+
+        function calcularFechaVencimiento(fecha, plazo) {
+            if (plazo === 0) return '-';
+            const date = new Date(fecha);
+            date.setDate(date.getDate() + plazo);
+            return date.toISOString().split('T')[0];
+        }
+
+        function calcularDiasMora(fechaVencimiento) {
+            if (fechaVencimiento === '-') return 0;
+            const hoy = new Date();
+            const vencimiento = new Date(fechaVencimiento);
+            const diferencia = Math.floor((hoy - vencimiento) / (1000 * 60 * 60 * 24));
+            return diferencia > 0 ? diferencia : 0;
+        }
+
+        function formatCurrency(amount) {
+            return '$' + amount.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function getMovimientosCliente() {
+            if (!clienteActual) return [];
+            return movimientos[clienteActual.codigo] || [];
+        }
+
+        function renderTable() {
+            if (!clienteActual) return;
+            
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            const movimientosCliente = getMovimientosCliente();
+            let saldoAcumulado = 0;
+            let totalCargos = 0;
+            let totalAbonos = 0;
+
+            movimientosCliente.forEach(mov => {
+                saldoAcumulado += mov.cargo - mov.abono;
+                totalCargos += mov.cargo;
+                totalAbonos += mov.abono;
+
+                const fechaVencimiento = calcularFechaVencimiento(mov.fecha, mov.plazoCredito);
+                const diasMora = calcularDiasMora(fechaVencimiento);
+                const estatus = diasMora > 0 ? 'Vencido' : 'Vigente';
+
+                if (editingId === mov.id) {
+                    const tr = document.createElement('tr');
+                    tr.className = 'editing-row';
+                    tr.innerHTML = `
+                        <td><input type="date" id="edit_fecha" value="${mov.fecha}" style="width:100%"></td>
+                        <td>
+                            <select id="edit_tipo" style="width:100%">
+                                <option ${mov.tipo === 'Venta' ? 'selected' : ''}>Venta</option>
+                                <option ${mov.tipo === 'Pago' ? 'selected' : ''}>Pago</option>
+                                <option ${mov.tipo === 'Nota de Crédito' ? 'selected' : ''}>Nota de Crédito</option>
+                                <option ${mov.tipo === 'Ajuste' ? 'selected' : ''}>Ajuste</option>
+                            </select>
+                        </td>
+                        <td><input type="text" id="edit_numDocumento" value="${mov.numDocumento}" style="width:100%"></td>
+                        <td><input type="text" id="edit_descripcion" value="${mov.descripcion}" style="width:100%"></td>
+                        <td><input type="number" id="edit_cargo" value="${mov.cargo}" style="width:100%"></td>
+                        <td><input type="number" id="edit_abono" value="${mov.abono}" style="width:100%"></td>
+                        <td colspan="5"><input type="number" id="edit_plazoCredito" value="${mov.plazoCredito}" placeholder="Plazo" style="width:100px"></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-save" onclick="guardarEdicion(${mov.id})">💾 Guardar</button>
+                                <button class="btn-icon btn-cancel" onclick="cancelarEdicion()">❌ Cancelar</button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                } else {
+                    const tipoBadge = mov.tipo.toLowerCase().replace(/ /g, '');
+                    const tr = document.createElement('tr');
+                    tr.className = estatus.toLowerCase();
+                    tr.innerHTML = `
+                        <td>${mov.fecha}</td>
+                        <td><span class="badge ${tipoBadge}">${mov.tipo}</span></td>
+                        <td style="font-family: monospace">${mov.numDocumento}</td>
+                        <td style="color: #6b7280">${mov.descripcion}</td>
+                        <td class="text-right amount-red">${mov.cargo > 0 ? formatCurrency(mov.cargo) : '-'}</td>
+                        <td class="text-right amount-green">${mov.abono > 0 ? formatCurrency(mov.abono) : '-'}</td>
+                        <td class="text-right amount-bold">${formatCurrency(saldoAcumulado)}</td>
+                        <td class="text-center">${mov.plazoCredito} días</td>
+                        <td class="text-center">${fechaVencimiento}</td>
+                        <td class="text-center" style="font-weight:600; color:${diasMora > 0 ? '#dc2626' : '#16a34a'}">${diasMora}</td>
+                        <td class="text-center"><span class="badge ${estatus.toLowerCase()}">${estatus}</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-edit" onclick="editarMovimiento(${mov.id})">✏️ Editar</button>
+                                <button class="btn-icon btn-delete" onclick="eliminarMovimiento(${mov.id})">🗑️ Eliminar</button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            });
+
+            // Update summary
+            document.getElementById('saldoTotal').textContent = formatCurrency(saldoAcumulado);
+            document.getElementById('totalCargos').textContent = formatCurrency(totalCargos);
+            document.getElementById('totalAbonos').textContent = formatCurrency(totalAbonos);
+            document.getElementById('totalMovimientos').textContent = movimientosCliente.length;
+
+            // Update footer
+            document.getElementById('footerCargos').textContent = formatCurrency(totalCargos);
+            document.getElementById('footerAbonos').textContent = formatCurrency(totalAbonos);
+            document.getElementById('footerSaldo').textContent = formatCurrency(saldoAcumulado);
+        }
+
+        function agregarMovimiento() {
+            if (!clienteActual) {
+                alert('Primero debes seleccionar un cliente');
+                return;
+            }
+
+            const fecha = document.getElementById('fecha').value;
+            const tipo = document.getElementById('tipo').value;
+            const numDocumento = document.getElementById('numDocumento').value;
+            const descripcion = document.getElementById('descripcion').value;
+            const cargo = parseFloat(document.getElementById('cargo').value) || 0;
+            const abono = parseFloat(document.getElementById('abono').value) || 0;
+            const plazoCredito = parseInt(document.getElementById('plazoCredito').value) || 0;
+
+            if (!numDocumento || (cargo === 0 && abono === 0)) {
+                alert('Por favor complete los campos obligatorios (No. Documento y Cargo o Abono)');
+                return;
+            }
+
+            // Obtener movimientos del cliente actual
+            if (!movimientos[clienteActual.codigo]) {
+                movimientos[clienteActual.codigo] = [];
+            }
+
+            const movimientosCliente = movimientos[clienteActual.codigo];
+            const nuevoId = movimientosCliente.length > 0 
+                ? Math.max(...movimientosCliente.map(m => m.id)) + 1 
+                : 1;
+
+            movimientosCliente.push({
+                id: nuevoId,
+                fecha,
+                tipo,
+                numDocumento,
+                descripcion,
+                cargo,
+                abono,
+                plazoCredito
+            });
+
+            // Guardar en localStorage
+            localStorage.setItem('movimientos', JSON.stringify(movimientos));
+
+            // Reset form
+            document.getElementById('fecha').valueAsDate = new Date();
+            document.getElementById('tipo').value = 'Venta';
+            document.getElementById('numDocumento').value = '';
+            document.getElementById('descripcion').value = '';
+            document.getElementById('cargo').value = '0';
+            document.getElementById('abono').value = '0';
+            document.getElementById('plazoCredito').value = clienteActual.plazoCredito || 30;
+
+            renderTable();
+        }
+
+        function editarMovimiento(id) {
+            editingId = id;
+            renderTable();
+        }
+
+        function guardarEdicion(id) {
+            if (!clienteActual) return;
+
+            const movimientosCliente = movimientos[clienteActual.codigo];
+            const mov = movimientosCliente.find(m => m.id === id);
+            
+            mov.fecha = document.getElementById('edit_fecha').value;
+            mov.tipo = document.getElementById('edit_tipo').value;
+            mov.numDocumento = document.getElementById('edit_numDocumento').value;
+            mov.descripcion = document.getElementById('edit_descripcion').value;
+            mov.cargo = parseFloat(document.getElementById('edit_cargo').value) || 0;
+            mov.abono = parseFloat(document.getElementById('edit_abono').value) || 0;
+            mov.plazoCredito = parseInt(document.getElementById('edit_plazoCredito').value) || 0;
+            
+            localStorage.setItem('movimientos', JSON.stringify(movimientos));
+            editingId = null;
+            renderTable();
+        }
+
+        function cancelarEdicion() {
+            editingId = null;
+            renderTable();
+        }
+
+        function eliminarMovimiento(id) {
+            if (!clienteActual) return;
+
+            if (confirm('¿Está seguro de eliminar este movimiento?')) {
+                movimientos[clienteActual.codigo] = movimientos[clienteActual.codigo].filter(m => m.id !== id);
+                localStorage.setItem('movimientos', JSON.stringify(movimientos));
+                renderTable();
+            }
+        }
+
+        function exportarCSV() {
+            if (!clienteActual) {
+                alert('Primero debes seleccionar un cliente');
+                return;
+            }
+
+            const movimientosCliente = getMovimientosCliente();
+            
+            if (movimientosCliente.length === 0) {
+                alert('No hay movimientos para exportar');
+                return;
+            }
+            
+            let csv = 'REGISTRO DE MOVIMIENTOS POR CLIENTE - DISTRIBUIDORA DE ALIMENTOS ZARCI\n';
+            csv += `Cliente: ${clienteActual.codigo} - ${clienteActual.nombre}\n`;
+            csv += `RFC: ${clienteActual.rfc}\n`;
+            csv += `Fecha de generación: ${new Date().toLocaleDateString('es-MX')}\n\n`;
+            csv += 'Fecha,Tipo,No. Documento,Descripción,Cargo,Abono,Saldo,Plazo,Fecha Vencimiento,Días Mora,Estatus\n';
+            
+            let saldoAcumulado = 0;
+            let totalCargos = 0;
+            let totalAbonos = 0;
+
+            movimientosCliente.forEach(mov => {
+                saldoAcumulado += mov.cargo - mov.abono;
+                totalCargos += mov.cargo;
+                totalAbonos += mov.abono;
+
+                const fechaVencimiento = calcularFechaVencimiento(mov.fecha, mov.plazoCredito);
+                const diasMora = calcularDiasMora(fechaVencimiento);
+                const estatus = diasMora > 0 ? 'Vencido' : 'Vigente';
+
+                csv += `${mov.fecha},${mov.tipo},${mov.numDocumento},"${mov.descripcion}",${mov.cargo},${mov.abono},${saldoAcumulado},${mov.plazoCredito},${fechaVencimiento},${diasMora},${estatus}\n`;
+            });
+
+            csv += `\n,,,TOTALES,${totalCargos},${totalAbonos},${saldoAcumulado}`;
+
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `Registro_${clienteActual.codigo}_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+        }
+
+        // Escuchar cambios en localStorage para sincronizar entre pestañas
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'clientes') {
+                cargarClientes();
+            } else if (e.key === 'movimientos') {
+                movimientos = JSON.parse(e.newValue) || {};
+                renderTable();
+            }
+        });
+
+        // Initial render
+        inicializar();
+    </script>
+</body>
+</html>
